@@ -4,6 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import {User} from "./user/entity/user.entity"
+import {Todo} from "./todo/entities/todo.entity"
+import {Task} from "./task/entities/task.entity"
+import { TodoModule } from './todo/todo.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -13,13 +17,15 @@ import {User} from "./user/entity/user.entity"
     url: process.env.DB_URL,
     synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [User, Todo, Task],
       ssl: {
         rejectUnauthorized: false
       },
   }),
     AuthModule,
-    UserModule,],
+    UserModule,
+    TodoModule,
+    TaskModule,],
   controllers: [],
   providers: [],
 })

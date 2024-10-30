@@ -18,7 +18,7 @@ export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user : User = new User();
     user.username = createUserDto.username;
     user.email = createUserDto.email;
@@ -35,7 +35,7 @@ export class UserService {
       throw new InternalServerErrorException();
     }
   }
-  async updateUserUsername(id: number, updateUsernameDto: UpdateUsernameDto): Promise<User> {
+  async update(id: number, updateUsernameDto: UpdateUsernameDto): Promise<User> {
     const user: User = await this.userRepository.findOneBy({id});
     if(!user){
       throw new NotFoundException(`User with id ${id} not found`);
@@ -57,7 +57,7 @@ export class UserService {
     }
     return user;
   }
-  async getUserForClient(id: number): Promise<any> {
+  async findOne(id: number): Promise<any> {
     const user: User = await this.userRepository.findOneBy({id});
     if(!user){
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ export class UserService {
     const {password, ...result} = user;
     return result;
   }
-  async deleteUser(id:number): Promise<string> {
+  async remove(id:number): Promise<string> {
     const user: User = await this.userRepository.findOneBy({id})
     if(!user){
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);

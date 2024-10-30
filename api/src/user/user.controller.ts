@@ -10,16 +10,16 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get()
   get(@Request() req: any) {
-    return this.userService.getUserForClient(+req.user.id);
+    return this.userService.findOne(+req.user.id);
   }
   @UseGuards(AuthGuard)
   @Delete()
   remove(@Request() req: any) {
-    return this.userService.deleteUser(+req.user.id);
+    return this.userService.remove(+req.user.id);
   }
   @UseGuards(AuthGuard)
   @Patch()
   update(@Request() req: any, @Body() updateUsernameDto: UpdateUsernameDto){
-    return this.userService.updateUserUsername(+req.user.id, updateUsernameDto);
+    return this.userService.update(+req.user.id, updateUsernameDto);
   }
 }
