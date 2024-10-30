@@ -1,15 +1,22 @@
-import {ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException} from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {User} from "./entity/user.entity";
 import { CreateUserDto } from './dto/create-user-dto';
+import {UpdateUsernameDto} from "./dto/update-username-dto";
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-
   ) {}
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user : User = new User();
@@ -28,12 +35,35 @@ export class UserService {
       throw new InternalServerErrorException();
     }
   }
+  async updateUserUsername(id: number, updateUsernameDto: UpdateUsernameDto): Promise<User> {
+    const user: User = await this.userRepository.findOneBy({id});
+    if(!user){
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    user.username = updateUsernameDto.username;
+    try{
+      return await this.userRepository.save(user);
+    }catch(err){
+      if (err.code === '23505') {
+        throw new ConflictException(`username is already in use`);
+      }
+      throw new InternalServerErrorException();
+    }
+  }
   async getUser(email: string): Promise<User> {
     const user: User = await this.userRepository.findOneBy({email: email});
     if(!user){
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
     return user;
+  }
+  async getUserForClient(id: number): Promise<any> {
+    const user: User = await this.userRepository.findOneBy({id});
+    if(!user){
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    }
+    const {password, ...result} = user;
+    return result;
   }
   async deleteUser(id:number): Promise<string> {
     const user: User = await this.userRepository.findOneBy({id})
