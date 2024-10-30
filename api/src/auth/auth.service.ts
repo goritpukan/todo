@@ -1,4 +1,4 @@
-import {HttpException, Injectable, InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
+import { Injectable, UnauthorizedException} from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {CreateUserDto} from "../user/dto/create-user-dto";
 import {User} from "../user/entity/user.entity";
@@ -14,12 +14,15 @@ export class AuthService {
   async signup(createUserDto: CreateUserDto): Promise<any> {
     const user:User = await this.userService.createUser(createUserDto);
 
-    const payload = { sub: user.id, username: user.username };
+    const {password, ...result} = user;
+    const payload = { id: user.id, username: user.username };
+    const token = await this.jwtService.signAsync(payload);
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      user: result,
+      access_token: token,
     };
   }
-  async signin(email: string, pass: string): Promise<any> {
+  async signin(email: string, pass: string): Promise<{ user: any; access_token: string }> {
     const user: User = await this.userService.getUser(email);
     if(!user){
       throw new UnauthorizedException("Password or email is incorrect");
@@ -27,9 +30,12 @@ export class AuthService {
     if(!await bcrypt.compare(pass, user.password)){
       throw new UnauthorizedException("Password or email is incorrect");
     }
-    const payload = { sub: user.id, username: user.username };
+    const {password, ...result} = user;
+    const payload = { id: user.id, username: user.username };
+    const token = await this.jwtService.signAsync(payload);
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      user: result,
+      access_token: token,
     };
   }
 }

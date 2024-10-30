@@ -1,12 +1,14 @@
-import {Body, Controller, Param, Post, Get, Delete} from '@nestjs/common';
+import {Controller, Request, Delete, UseGuards} from '@nestjs/common';
 import {UserService} from './user.service';
-import {CreateUserDto} from "./dto/create-user-dto";
+import {AuthGuard} from "../auth/auth.guard";
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.deleteUser(+id);
+
+  @UseGuards(AuthGuard)
+  @Delete()
+  remove(@Request() req) {
+    return this.userService.deleteUser(+req.user.id);
   }
 }
