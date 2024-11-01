@@ -1,34 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request} from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import {AuthGuard} from "../auth/auth.guard";
 
 @Controller('task')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.taskService.create(createTaskDto);
+  @UseGuards(AuthGuard)
+  @Post(':todoID')
+  create(@Param('todoID') todoID: number ,@Body() createTaskDto: CreateTaskDto, @Request() req: any) {
+    return this.taskService.create(todoID, createTaskDto, +req.user.id);
   }
-
-  @Get()
-  findAll() {
-    return this.taskService.findAll();
+  @UseGuards(AuthGuard)
+  @Get(':todoID')
+  findAll(@Param('todoID') todoID: number, @Request() req: any) {
+    return this.taskService.findAll(todoID, +req.user.id);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.taskService.findOne(+id);
+  @UseGuards(AuthGuard)
+  @Patch(':todoID/:taskID')
+  update(@Param('todoID') todoID: number, @Param('taskID') taskID: number, @Body() updateTaskDto: UpdateTaskDto, @Request() req: any) {
+    return this.taskService.update(todoID, taskID, updateTaskDto, +req.user.id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(+id, updateTaskDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.taskService.remove(+id);
+  @UseGuards(AuthGuard)
+  @Delete(':todoID/:taskID')
+  remove(@Param('todoID') todoID: number, @Param('taskID') taskID: number, @Request() req: any) {
+    return this.taskService.remove(todoID, taskID, +req.user.id);
   }
 }
