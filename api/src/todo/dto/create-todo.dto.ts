@@ -1,4 +1,4 @@
-import {IsAlphanumeric, IsNotEmpty, MinLength} from "class-validator";
+import {IsNotEmpty, MinLength, IsArray} from "class-validator";
 
 export class CreateTodoDto {
   @IsNotEmpty({message: "Name is required"})
@@ -6,4 +6,7 @@ export class CreateTodoDto {
   name: string;
   @IsNotEmpty()
   ownerID: string;
+
+  @IsArray()
+  tasks: { name: string }[];
 }

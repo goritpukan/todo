@@ -19,9 +19,7 @@ export class TaskService {
 
     const task: Task = new Task();
     task.name = createTaskDto.name;
-    task.description = createTaskDto.description;
     task.todo = todo;
-
     return this.taskRepository.save(task);
   }
 
@@ -42,7 +40,6 @@ export class TaskService {
     if(!task) throw new NotFoundException("Task not found");
 
     task.name = updateTaskDto.name;
-    task.description = updateTaskDto.description;
     task.completed = updateTaskDto.completed;
 
     return this.taskRepository.save(task);

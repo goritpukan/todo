@@ -36,7 +36,8 @@ const AuthForm: React.FC<AuthFormProps> = ({isSignUp}) => {
       password: isValidPassword(password),
     }
   }
-  const handleSubmit = async (): Promise<any> => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<any> => {
+    event.preventDefault();
     setIsSubmitted(true);
     const errors = validate();
     if (errors.email || (isSignUp && errors.username) || errors.password) return;
@@ -59,43 +60,46 @@ const AuthForm: React.FC<AuthFormProps> = ({isSignUp}) => {
     if (isSubmitted) setErrors(validate());
   }, [email, password, username, isSubmitted]);//test! isSub
 
+  // @ts-ignore
   return (
     <div className={Styles.auth}>
-      <Stack sx={{border: "2px, solid", padding: 4, borderRadius: 5, bgcolor: "white"}} spacing={4}>
-        <h1 className={Styles.header}>{isSignUp ? "Sign up" : "Sign in"}</h1>
-        <TextField
-          error={Boolean(errors.email)}
-          helperText={errors.email}
-          label="Email"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {isSignUp && <TextField
-          error={Boolean(errors.username)}
-          helperText={errors.username}
-          label="Username"
-          required
-          onChange={(e) => setUsername(e.target.value)}
-        />}
-        <TextField
-          error={Boolean(errors.password)}
-          helperText={errors.password}
-          label="Password"
-          required
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {alert && <Alert severity="error">{alert}</Alert>}
-        <Button
-          disabled={isLoading}
-          onClick={handleSubmit}
-          variant={"contained"}>{isSignUp ? "Sign up" : "Sign in"}</Button>
-        <Button
-          component={Link}
-          href={isSignUp ? "/signin" : "/signup"}>
-          {isSignUp ? "Dont have an a account?" : "Already have an account?"}
-        </Button>
-      </Stack>
+      <form onSubmit={handleSubmit} noValidate>
+        <Stack sx={{border: "2px, solid", padding: 4, borderRadius: 5, bgcolor: "white"}} spacing={4}>
+          <h1 className={Styles.header}>{isSignUp ? "Sign up" : "Sign in"}</h1>
+          <TextField
+            error={Boolean(errors.email)}
+            helperText={errors.email}
+            label="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {isSignUp && <TextField
+            error={Boolean(errors.username)}
+            helperText={errors.username}
+            label="Username"
+            required
+            onChange={(e) => setUsername(e.target.value)}
+          />}
+          <TextField
+            error={Boolean(errors.password)}
+            helperText={errors.password}
+            label="Password"
+            required
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {alert && <Alert severity="error">{alert}</Alert>}
+          <Button
+            type="submit"
+            disabled={isLoading}
+            variant={"contained"}>{isSignUp ? "Sign up" : "Sign in"}</Button>
+          <Button
+            component={Link}
+            href={isSignUp ? "/signin" : "/signup"}>
+            {isSignUp ? "Dont have an a account?" : "Already have an account?"}
+          </Button>
+        </Stack>
+      </form>
     </div>
   )
 }
