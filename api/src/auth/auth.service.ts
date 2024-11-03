@@ -12,6 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
   async signup(createUserDto: CreateUserDto): Promise<any> {
+    console.log(createUserDto);
     const user:User = await this.userService.create(createUserDto);
 
     const {password, ...result} = user;

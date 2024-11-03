@@ -11,6 +11,7 @@ import {Repository} from 'typeorm';
 import {User} from "./entity/user.entity";
 import { CreateUserDto } from './dto/create-user-dto';
 import {UpdateUsernameDto} from "./dto/update-username-dto";
+import {capitalizeFirstLetter} from "../utils/string-utils";
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -30,7 +31,7 @@ export class UserService {
     }catch (err){
       if (err.code === '23505') {
         const key = err.detail.match(/\(([^)]+)\)/)?.[1];
-        throw new ConflictException(`${key} is already in use`);
+        throw new ConflictException(`${capitalizeFirstLetter(key)} is already in use`);
       }
       throw new InternalServerErrorException();
     }
@@ -45,7 +46,7 @@ export class UserService {
       return await this.userRepository.save(user);
     }catch(err){
       if (err.code === '23505') {
-        throw new ConflictException(`username is already in use`);
+        throw new ConflictException(`Username is already in use`);
       }
       throw new InternalServerErrorException();
     }
