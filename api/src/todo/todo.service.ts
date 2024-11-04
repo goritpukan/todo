@@ -15,11 +15,6 @@ export class TodoService {
     const todo: Todo = new Todo();
     todo.name = createTodoDto.name;
     todo.ownerID = ownerID;
-    todo.tasks = createTodoDto.tasks.map((task) => {
-      const newTask = new Task();
-      newTask.name = task.name;
-      return newTask;
-    });
     return this.todoRepository.save(todo);
   }
 
@@ -29,20 +24,20 @@ export class TodoService {
 
   async findOne(id: number, ownerID: number): Promise<Todo> {
     const todo: Todo = await this.todoRepository.findOneBy({id});
-    if (todo.ownerID !== ownerID) throw new ForbiddenException("You dont have access to this todo")
+    if (todo.ownerID !== ownerID) throw new ForbiddenException("You dont have access to this edit-todo")
     return todo;
   }
 
   async update(id: number, ownerID: number, updateTodoDto: UpdateTodoDto): Promise<Todo> {
     const todo: Todo = await this.todoRepository.findOneBy({id});
-    if (todo.ownerID !== ownerID) throw new ForbiddenException("You cant update this todo")
+    if (todo.ownerID !== ownerID) throw new ForbiddenException("You cant update this edit-todo")
     todo.name = updateTodoDto.name
     return this.todoRepository.save(todo);
   }
 
   async remove(id: number, ownerID: number): Promise<any> {
     const todo: Todo = await this.todoRepository.findOneBy({id});
-    if (todo.ownerID !== ownerID) throw new ForbiddenException("You cant update this todo")
+    if (todo.ownerID !== ownerID) throw new ForbiddenException("You cant update this edit-todo")
     return this.todoRepository.delete(id);
   }
 }

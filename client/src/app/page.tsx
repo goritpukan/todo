@@ -1,9 +1,7 @@
 import Header from "@/components/header/Header"
-import Todo from "@/components/todo/Todo";
+import TodoList from "@/components/todo/todo-list/TodoList";
 import Button from "@mui/material/Button"
 import AddIcon from '@mui/icons-material/Add';
-import {getData} from "@/utils/fetchData";
-import {cookies} from "next/headers";
 import Styles from "./page.module.css"
 
 export default async function Page() {
@@ -16,15 +14,11 @@ export default async function Page() {
     position: "absolute",
     color: "white"
   }
-  const cookieStore = await cookies();
-  const jwtCookie = cookieStore.get('access_token')?.value;
-  const todo = await getData("/api/todo", jwtCookie);
-
   return (
     <>
       <Header/>
       <div className={Styles.main}>
-        <Todo/>
+        <TodoList/>
         <Button sx={buttonStyle}><AddIcon/></Button>
       </div>
     </>

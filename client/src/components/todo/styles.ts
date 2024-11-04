@@ -1,3 +1,11 @@
+export const todoListStackStyle={
+  position: "relative",
+  width: "100%",
+  height: "90%",
+  overflow: 'scroll',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+}
 export const mainStackStyle={
   position: "relative",
   width: "300px",
@@ -18,26 +26,8 @@ export const todoStackStyle={
   gap: "10px",
 }
 export const taskStackStyle={
-  position: "relative",
   width: "100%",
+  flexDirection: 'row',
   alignItems:"center",
-}
-export const todoTextFieldStyle={
-  position: "relative",
-  width: "90%",
-  color: "green",
-  textAlign: "center",
-}
-export const taskTextFieldStyle= {
-  position: "relative",
-  width: "80%",
-  color: "green",
-  margin: 0,
-  padding: 0,
-}
-export const buttonStyle={
-  position: "absolute",
-  right: "10px",
-  bottom: "10px",
-  borderRadius: "30px"
+  borderBottom: "1px solid black",
 }

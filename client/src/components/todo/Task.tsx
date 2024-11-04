@@ -1,37 +1,57 @@
 "use client"
-import TextField from "@mui/material/TextField";
+import {TaskInterface} from "@/types/Task";
+import CheckBox from "@mui/material/Checkbox"
 import Stack from "@mui/material/Stack";
-import {taskStackStyle, taskTextFieldStyle} from "@/components/todo/styles";
-import {useEffect, useState} from "react";
+import {taskStackStyle} from "@/components/todo/styles";
+import {useEffect, useState, useRef} from "react";
+import {patchData, deleteData} from "@/utils/fetchData";
+import TextField from "@mui/material/TextField";
+import Styles from "./todo.module.css";
 
-interface Task {
-  id: number;
-  name: string;
-  completed: boolean;
-}
-interface TaskProps {
-  task: {
-    id: number;
-    name: string;
-    completed: boolean;
-  };
-  isLast: boolean;
-  addTask: () => void;
-  changeTask: (task: Task) => void;
-}
+export default function Task({name, completed, id, todoId, jwtToken}: TaskInterface) {
+  const [checked, setChecked] = useState(completed);
+  const [nameState, setNameState] = useState(name);
+  const [focus, setFocus] = useState(false);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
-const Task: React.FC<TaskProps> = ({task, addTask, isLast, changeTask}) => {
-  const [name, setName] = useState(task.name);
-  const [completed, setCompleted] = useState(task.completed);
-
+  const textFieldRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    changeTask({id: task.id, name: task.name, completed: task.completed});
-  },[name, completed]);
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return;
+    }
+    patchData(`/api/task/${todoId}/${id}`, {completed: checked}, jwtToken);
+  }, [checked]);
+  useEffect(() => {
+    if (!nameState) {
+      deleteData(`/api/task/${todoId}/${id}`, jwtToken)
+    }
+  }, [nameState]);
+
+  const handleBlur = () => {
+    if (nameState) {
+      patchData(`/api/task/${todoId}/${id}`, {name: nameState}, jwtToken);
+      setFocus(false);
+    }
+    setFocus(false);
+  }
+  const handleClick = () => {
+    setFocus(true);
+  }
+  if (!nameState || !name) return;
   return (
-    <Stack direction="row" sx={taskStackStyle}>
-      <TextField onChange={e => setName(e.target.value)} onClick={isLast ? addTask : () => {}} sx={taskTextFieldStyle} variant={"standard"} value={name}/>
+    <Stack sx={taskStackStyle}>
+      <CheckBox checked={checked} onClick={() => setChecked(!checked)}/>
+      {focus ?
+        <TextField
+          autoFocus
+          ref={textFieldRef}
+          value={nameState}
+          onChange={e => setNameState(e.target.value)}
+          onBlur={handleBlur}/>
+        : <span className={Styles.name} onClick={handleClick}>{nameState}</span>
+      }
     </Stack>
+
   )
 }
-
-export default Task;

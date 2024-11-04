@@ -14,8 +14,8 @@ export class TaskService {
   ) {}
   async create(todoID: number ,createTaskDto: CreateTaskDto, ownerId: number): Promise<Task> {
     const todo :Todo = await this.todoRepository.findOneBy({id: todoID});
-    if(!todo) throw new NotFoundException("Todo not found");
-    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this todo");
+    if(!todo) throw new NotFoundException("EditTodo not found");
+    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this edit-todo");
 
     const task: Task = new Task();
     task.name = createTaskDto.name;
@@ -25,19 +25,19 @@ export class TaskService {
 
   async findAll(todoID: number, ownerId: number): Promise<Task[]> {
     const todo :Todo = await this.todoRepository.findOneBy({id: todoID});
-    if(!todo) throw new NotFoundException("Todo not found");
-    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this todo");
+    if(!todo) throw new NotFoundException("EditTodo not found");
+    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this edit-todo");
 
     return this.taskRepository.find({where: {todo: {id: todoID}}})
   }
 
   async update(todoID: number,taskID: number ,updateTaskDto: UpdateTaskDto, ownerId: number):Promise<Task> {
     const todo :Todo = await this.todoRepository.findOneBy({id: todoID});
-    if(!todo) throw new NotFoundException("Todo not found");
-    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this todo");
+    if(!todo) throw new NotFoundException("EditTodo not found");
+    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this edit-todo");
 
     const task = await this.taskRepository.findOneBy({id: taskID});
-    if(!task) throw new NotFoundException("Task not found");
+    if(!task) throw new NotFoundException("EditTask not found");
 
     task.name = updateTaskDto.name;
     task.completed = updateTaskDto.completed;
@@ -47,11 +47,11 @@ export class TaskService {
 
   async remove(todoID: number,taskID: number, ownerId: number): Promise<any> {
     const todo :Todo = await this.todoRepository.findOneBy({id: todoID});
-    if(!todo) throw new NotFoundException("Todo not found");
-    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this todo");
+    if(!todo) throw new NotFoundException("EditTodo not found");
+    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this edit-todo");
 
     const task = await this.taskRepository.findOneBy({id: taskID});
-    if(!task) throw new NotFoundException("Task not found");
+    if(!task) throw new NotFoundException("EditTask not found");
 
     return this.taskRepository.remove(task);
   }

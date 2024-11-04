@@ -1,35 +1,30 @@
-"use client"
+import {TodoPropsInterface} from "@/types/Todo";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import {mainStackStyle,todoStackStyle ,todoTextFieldStyle, buttonStyle} from "@/components/todo/styles";
+import {mainStackStyle, todoStackStyle} from "@/components/todo/styles";
+import {getAccessToken} from "@/utils/getAccessToken";
+import {getData} from "@/utils/fetchData";
 import Task from "./Task";
-import {useState} from "react";
+import AddTaskButton from "@/components/todo/AddTaskButton";
 
-interface TaskType {
-  name: string;
-  completed: boolean;
-  id: number;
-}
-export default function Todo(){
-  const [tasks, setTasks] = useState<TaskType[]>([{name: "", completed: false, id: 0}]);
-  const addTask = (index: number) => {
-    setTasks([...tasks, {name: "", completed: false, id: index + 1}]);
-  }
-  const changeTask = (task: Task) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((_task) =>
-        _task.id === task.id ? { ..._task, ...task } : _task
-      )
-    );
-  }
+export default async function Todo({name, id} : TodoPropsInterface){
+  const jwtCookie = await getAccessToken();
+  const tasks = await getData(`/api/task/${id}`, jwtCookie);
+  const sortedTasks = tasks.sort((a:any, b:any) => {
+    return a.id - b.id;
+  })
   return(
-    <Stack sx={mainStackStyle} >
-      <TextField sx={todoTextFieldStyle} label={"Name"} variant={"standard"}></TextField>
-      <Stack sx={todoStackStyle}>
-        {tasks.map((task, index) => <Task addTask={() => addTask(index)} task={{id: index, name: task.name, completed: task.completed}} changeTask={changeTask} isLast={index === tasks.length - 1}/>)}
-      </Stack>
-      <Button sx={buttonStyle} variant={"contained"}>Save</Button>
+  <Stack sx={mainStackStyle}>
+    <h1>{name}</h1>
+    <Stack sx={todoStackStyle}>
+      {sortedTasks.map( (task:any) => <Task
+        name={task.name}
+        id={task.id}
+        completed={task.completed}
+        todoId={id}
+        jwtToken={jwtCookie}
+      />)}
+      <AddTaskButton todoId={id} jwtCookie={jwtCookie}/>
     </Stack>
+  </Stack>
   )
 }
