@@ -1,25 +1,20 @@
 import Header from "@/components/header/Header"
-import TodoList from "@/components/todo/todo-list/TodoList";
+import TodoList from "@/components/todo/TodoList";
 import Button from "@mui/material/Button"
 import AddIcon from '@mui/icons-material/Add';
 import Styles from "./page.module.css"
+import {getAccessToken} from "@/utils/getAccessToken";
+import {getData} from "@/utils/fetchData";
 
 export default async function Page() {
-  const buttonStyle = {
-    bgcolor: "#21B1FF",
-    aspectRatio: "1/1",
-    borderRadius: "50%",
-    right: "10px",
-    bottom: "90px",
-    position: "absolute",
-    color: "white"
-  }
+  const jwtCookie = await getAccessToken();
+  const todos = await getData("/api/todo", jwtCookie);
+  const sortedTodos = todos ? todos.sort((a:any, b:any) => a.id - b.id) : null;
   return (
     <>
       <Header/>
       <div className={Styles.main}>
-        <TodoList/>
-        <Button sx={buttonStyle}><AddIcon/></Button>
+        <TodoList todos={sortedTodos}/>
       </div>
     </>
   )

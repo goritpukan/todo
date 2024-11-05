@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import {Task} from "../../task/entities/task.entity";
+import {Exclude} from "class-transformer";
 @Entity()
 export class Todo {
   @PrimaryGeneratedColumn()
@@ -11,6 +12,7 @@ export class Todo {
   @Column()
   ownerID: number;
 
-  @OneToMany(() => Task, (task) => task.todo, { cascade: true })
+  @OneToMany(() => Task, (task) => task.todo, { cascade: true, eager: true })
+  @Exclude()
   tasks: Task[];
 }

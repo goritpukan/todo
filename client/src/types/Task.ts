@@ -3,5 +3,4 @@ export interface TaskInterface {
   completed: boolean;
   id: number;
   todoId: number;
-  jwtToken: string | undefined;
 }

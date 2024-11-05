@@ -36,7 +36,7 @@ const AuthForm: React.FC<AuthFormProps> = ({isSignUp}) => {
       password: isValidPassword(password),
     }
   }
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<any> => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitted(true);
     const errors = validate();
@@ -58,9 +58,8 @@ const AuthForm: React.FC<AuthFormProps> = ({isSignUp}) => {
 
   useEffect(() => {
     if (isSubmitted) setErrors(validate());
-  }, [email, password, username, isSubmitted]);//test! isSub
+  }, [email, password, username, isSubmitted]);
 
-  // @ts-ignore
   return (
     <div className={Styles.auth}>
       <form onSubmit={handleSubmit} noValidate>

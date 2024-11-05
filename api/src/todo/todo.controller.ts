@@ -3,6 +3,8 @@ import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import {AuthGuard} from "../auth/auth.guard";
+import {Todo} from "./entities/todo.entity";
+import {plainToClass} from "class-transformer";
 
 @Controller('todo')
 export class TodoController {
@@ -11,7 +13,8 @@ export class TodoController {
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createTodoDto: CreateTodoDto, @Request() req: any) {
-    return this.todoService.create(+req.user.id, createTodoDto);
+    const todo = this.todoService.create(+req.user.id, createTodoDto);
+    return plainToClass(Todo, todo);
   }
   @UseGuards(AuthGuard)
   @Get()

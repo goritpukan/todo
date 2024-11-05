@@ -8,7 +8,7 @@ import {patchData, deleteData} from "@/utils/fetchData";
 import TextField from "@mui/material/TextField";
 import Styles from "./todo.module.css";
 
-export default function Task({name, completed, id, todoId, jwtToken}: TaskInterface) {
+export default function Task({name, completed, id, todoId}: TaskInterface) {
   const [checked, setChecked] = useState(completed);
   const [nameState, setNameState] = useState(name);
   const [focus, setFocus] = useState(false);
@@ -20,17 +20,17 @@ export default function Task({name, completed, id, todoId, jwtToken}: TaskInterf
       setIsFirstRender(false);
       return;
     }
-    patchData(`/api/task/${todoId}/${id}`, {completed: checked}, jwtToken);
+    patchData(`/api/task/${todoId}/${id}`, {completed: checked});
   }, [checked]);
   useEffect(() => {
     if (!nameState) {
-      deleteData(`/api/task/${todoId}/${id}`, jwtToken)
+      deleteData(`/api/task/${todoId}/${id}`)
     }
   }, [nameState]);
 
   const handleBlur = () => {
     if (nameState) {
-      patchData(`/api/task/${todoId}/${id}`, {name: nameState}, jwtToken);
+      patchData(`/api/task/${todoId}/${id}`, {name: nameState});
       setFocus(false);
     }
     setFocus(false);

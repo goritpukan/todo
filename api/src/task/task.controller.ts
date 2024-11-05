@@ -14,11 +14,6 @@ export class TaskController {
     return this.taskService.create(todoID, createTaskDto, +req.user.id);
   }
   @UseGuards(AuthGuard)
-  @Get(':todoID')
-  findAll(@Param('todoID') todoID: number, @Request() req: any) {
-    return this.taskService.findAll(todoID, +req.user.id);
-  }
-  @UseGuards(AuthGuard)
   @Patch(':todoID/:taskID')
   update(@Param('todoID') todoID: number, @Param('taskID') taskID: number, @Body() updateTaskDto: UpdateTaskDto, @Request() req: any) {
     return this.taskService.update(todoID, taskID, updateTaskDto, +req.user.id);

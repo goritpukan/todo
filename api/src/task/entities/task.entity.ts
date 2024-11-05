@@ -1,5 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
 import {Todo} from "../../todo/entities/todo.entity";
+import {Exclude} from "class-transformer";
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn()
@@ -11,6 +12,7 @@ export class Task {
   @Column({default: false})
   completed: boolean;
 
-  @ManyToOne(() => Todo, (todo) => todo.tasks)
+  @ManyToOne(() => Todo, (todo) => todo.tasks, { onDelete: "CASCADE" })
+  @Exclude()
   todo: Todo;
 }

@@ -1,5 +1,5 @@
-export const postData = async (url: string, data: any, jwtCookie?: string | undefined): Promise<any> => {
-  const headers:any  = {
+export const postData = async(url: string, data:any, jwtCookie?: string | undefined):Promise<{res: Response,data: any}> => {
+  const headers:Record<string, string> = {
     'Content-Type': 'application/json'
   }
   if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
@@ -9,16 +9,16 @@ export const postData = async (url: string, data: any, jwtCookie?: string | unde
       headers: headers,
       body: JSON.stringify(data)
     });
-  data = await res.json();
-  return {res, data};
+  const resData = await res.json();
+  return {res, data: resData};
 }
-export const getData = async (url: string, jwtCookie?: string | undefined): Promise<any> => {
+export const getData = async(url: string, jwtCookie?: string | undefined): Promise<any|undefined> => {
   try {
-    const headers:any  = {
+    const headers:Record<string, string>  = {
       'Content-Type': 'application/json'
     }
     if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
-    const res = await fetch(`http://localhost:8000${url}`, {
+    const res = await fetch(jwtCookie ? `http://localhost:8000${url}` : url, {
       method: 'GET', headers: headers, credentials: 'include'
     });
     if (res.ok) {
@@ -28,7 +28,7 @@ export const getData = async (url: string, jwtCookie?: string | undefined): Prom
     console.log(err);
   }
 }
-export const patchData = async (url: string, data: any, jwtCookie: string | undefined): Promise<any> => {
+export const patchData = async (url: string, data:any): Promise<any|undefined> => {
   try {
     const res = await fetch(`http://localhost:8000${url}`,
       {
@@ -44,7 +44,7 @@ export const patchData = async (url: string, data: any, jwtCookie: string | unde
     console.log(err);
   }
 }
-export const deleteData = async (url: string, jwtCookie: string | undefined): Promise<any> => {
+export const deleteData = async (url: string): Promise<any | undefined> => {
   try {
     const res = await fetch(`http://localhost:8000${url}`,
       {

@@ -23,14 +23,6 @@ export class TaskService {
     return this.taskRepository.save(task);
   }
 
-  async findAll(todoID: number, ownerId: number): Promise<Task[]> {
-    const todo :Todo = await this.todoRepository.findOneBy({id: todoID});
-    if(!todo) throw new NotFoundException("EditTodo not found");
-    if(todo.ownerID !== ownerId) throw new ForbiddenException("You dont have access to this edit-todo");
-
-    return this.taskRepository.find({where: {todo: {id: todoID}}})
-  }
-
   async update(todoID: number,taskID: number ,updateTaskDto: UpdateTaskDto, ownerId: number):Promise<Task> {
     const todo :Todo = await this.todoRepository.findOneBy({id: todoID});
     if(!todo) throw new NotFoundException("EditTodo not found");
