@@ -87,7 +87,7 @@ const AuthForm: React.FC<AuthFormProps> = ({isSignUp}) => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          {alert && <Alert severity="error">{alert}</Alert>}
+          {alert && <Alert sx={{wordBreak: 'break-word', whiteSpace: 'normal'}} severity="error">{alert}</Alert>}
           <Button
             type="submit"
             disabled={isLoading}

@@ -12,7 +12,8 @@ export class AuthController {
     res.cookie('access_token', access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 7
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      sameSite: 'none'
     });
     return res.send({
       user,
@@ -24,7 +25,8 @@ export class AuthController {
     res.cookie('access_token', access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 7
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      sameSite: 'none'
     });
     return res.send({
       user,
@@ -36,7 +38,7 @@ export class AuthController {
       {httpOnly: true,
       expires: new Date(0),
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'});
+      sameSite: 'none'});
     res.status(200).json({ message: 'Logout successful' });
   }
 }

@@ -3,7 +3,7 @@ export const postData = async(url: string, data:any, jwtCookie?: string | undefi
     'Content-Type': 'application/json'
   }
   if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
-  const res = await fetch(url,
+  const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url,
     {
       method: "POST",
       headers: headers,
@@ -18,9 +18,11 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
       'Content-Type': 'application/json'
     }
     if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
-    const res = await fetch(jwtCookie ? process.env.API_URL + url : url, {
+    console.log(process.env.NEXT_PUBLIC_API_URL + url);
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
       method: 'GET', headers: headers, credentials: 'include'
     });
+    console.log(res);
     if (res.ok) {
       return await res.json();
     }
@@ -30,7 +32,7 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
 }
 export const patchData = async (url: string, data:any): Promise<any|undefined> => {
   try {
-    const res = await fetch(url,
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url,
       {
         method: 'PATCH',
         headers: {
@@ -46,7 +48,7 @@ export const patchData = async (url: string, data:any): Promise<any|undefined> =
 }
 export const deleteData = async (url: string): Promise<any | undefined> => {
   try {
-    const res = await fetch(process.env.API_URL + url,
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url,
       {
         method: 'DELETE',
         headers: {
