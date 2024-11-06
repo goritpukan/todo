@@ -22,7 +22,6 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
       method: 'GET', headers: headers, credentials: 'include'
     });
-    console.log(res);
     if (res.ok) {
       return await res.json();
     }

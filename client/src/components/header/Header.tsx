@@ -8,10 +8,8 @@ import {redirect} from "next/navigation";
 export default async function Header() {
   const cookieStore = await cookies();
   const jwtCookie = cookieStore.get('access_token')?.value;
-  const test = await getData("/api/user", jwtCookie);
-  console.log(test);
-  const data = {username: "klk"}
-  // if(!data) redirect("/signin");
+  const data = await getData("/api/user", jwtCookie);
+  if(!data) redirect("/signin");
   return (
     <Stack sx={{bgcolor: "#21B1FF", height: 60, alignItems: "center", justifyContent: "space-between", padding: 1}}
            direction="row" spacing={2}>
