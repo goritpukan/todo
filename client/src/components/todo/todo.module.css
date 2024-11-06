@@ -3,3 +3,9 @@
     width: 100%;
     cursor: pointer;
 }
+.header{
+    position: relative;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}

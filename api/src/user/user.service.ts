@@ -42,8 +42,9 @@ export class UserService {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     user.username = updateUsernameDto.username;
+    const {password, ...result} = user;
     try{
-      return await this.userRepository.save(user);
+      return await this.userRepository.save(result);
     }catch(err){
       if (err.code === '23505') {
         throw new ConflictException(`Username is already in use`);

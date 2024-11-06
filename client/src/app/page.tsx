@@ -1,7 +1,5 @@
 import Header from "@/components/header/Header"
 import TodoList from "@/components/todo/TodoList";
-import Button from "@mui/material/Button"
-import AddIcon from '@mui/icons-material/Add';
 import Styles from "./page.module.css"
 import {getAccessToken} from "@/utils/getAccessToken";
 import {getData} from "@/utils/fetchData";

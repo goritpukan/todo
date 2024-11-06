@@ -18,7 +18,7 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
       'Content-Type': 'application/json'
     }
     if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
-    const res = await fetch(jwtCookie ? `http://localhost:8000${url}` : url, {
+    const res = await fetch(jwtCookie ? process.env.API_URL + url : url, {
       method: 'GET', headers: headers, credentials: 'include'
     });
     if (res.ok) {
@@ -30,7 +30,7 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
 }
 export const patchData = async (url: string, data:any): Promise<any|undefined> => {
   try {
-    const res = await fetch(`http://localhost:8000${url}`,
+    const res = await fetch(url,
       {
         method: 'PATCH',
         headers: {
@@ -46,7 +46,7 @@ export const patchData = async (url: string, data:any): Promise<any|undefined> =
 }
 export const deleteData = async (url: string): Promise<any | undefined> => {
   try {
-    const res = await fetch(`http://localhost:8000${url}`,
+    const res = await fetch(process.env.API_URL + url,
       {
         method: 'DELETE',
         headers: {

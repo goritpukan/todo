@@ -33,7 +33,12 @@ export default function Task({name, completed, id, todoId}: TaskInterface) {
       patchData(`/api/task/${todoId}/${id}`, {name: nameState});
       setFocus(false);
     }
-    setFocus(false);
+  }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if(event.key ==='Enter'){
+      patchData(`/api/task/${todoId}/${id}`, {name: nameState});
+      setFocus(false);
+    }
   }
   const handleClick = () => {
     setFocus(true);
@@ -44,11 +49,15 @@ export default function Task({name, completed, id, todoId}: TaskInterface) {
       <CheckBox checked={checked} onClick={() => setChecked(!checked)}/>
       {focus ?
         <TextField
+          variant={"standard"}
           autoFocus
           ref={textFieldRef}
           value={nameState}
           onChange={e => setNameState(e.target.value)}
-          onBlur={handleBlur}/>
+          onBlur={handleBlur}
+          sx={{width: "100%", bottom: "-5px"}}
+          onKeyDown={handleKeyDown}
+        />
         : <span className={Styles.name} onClick={handleClick}>{nameState}</span>
       }
     </Stack>
