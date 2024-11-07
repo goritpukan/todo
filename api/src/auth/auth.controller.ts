@@ -15,7 +15,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
     return res.send({
       user,
@@ -29,7 +29,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: 'none',
+      sameSite: 'strict',
       path: "/"
     });
     return res.send({
@@ -44,7 +44,7 @@ export class AuthController {
         httpOnly: true,
         expires: new Date(0),
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none',
+        sameSite: 'strict',
         path: "/"
       });
     res.status(200).json({message: 'Logout successful'});

@@ -16,9 +16,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user : User = new User();
     user.username = createUserDto.username;

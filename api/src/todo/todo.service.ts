@@ -8,8 +8,7 @@ import {Task} from "../task/entities/task.entity";
 
 @Injectable()
 export class TodoService {
-  constructor(
-    @InjectRepository(Todo) private readonly todoRepository: Repository<Todo>,) {}
+  constructor(@InjectRepository(Todo) private readonly todoRepository: Repository<Todo>,) {}
 
   async create(ownerID: number, createTodoDto: CreateTodoDto): Promise<Todo> {
     const todo: Todo = new Todo();

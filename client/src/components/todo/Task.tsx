@@ -61,6 +61,5 @@ export default function Task({name, completed, id, todoId}: TaskInterface) {
         : <span className={Styles.name} onClick={handleClick}>{nameState}</span>
       }
     </Stack>
-
   )
 }
