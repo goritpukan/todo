@@ -30,11 +30,6 @@ dist/
 
 # MacOS files
 .DS_Store
-
-# Docker files
-docker-compose.override.yml
-.dockerignore
-
 # Debug files
 *.tsbuildinfo
 

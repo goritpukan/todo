@@ -13,9 +13,9 @@ export class AuthController {
     const {user, access_token} = await this.authService.signup(createUserDto);
     res.cookie('access_token', access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: 'strict'
+      sameSite: 'none'
     });
     return res.send({
       user,
@@ -27,9 +27,9 @@ export class AuthController {
     const {user, access_token} = await this.authService.signin(body.email, body.password);
     res.cookie('access_token', access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: 'strict',
+      sameSite: 'none',
       path: "/"
     });
     return res.send({
@@ -43,8 +43,8 @@ export class AuthController {
       {
         httpOnly: true,
         expires: new Date(0),
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: true,
+        sameSite: "none",
         path: "/"
       });
     res.status(200).json({message: 'Logout successful'});
