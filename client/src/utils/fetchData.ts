@@ -3,7 +3,7 @@ export const postData = async(url: string, data:any, jwtCookie?: string | undefi
     'Content-Type': 'application/json'
   }
   if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
-  const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url,
+  const res = await fetch(url,
     {
       method: "POST",
       headers: headers,
@@ -20,7 +20,7 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
     }
     if(jwtCookie) headers["Cookie"] = `access_token=${jwtCookie}`;
     console.log(process.env.NEXT_PUBLIC_API_URL + url);
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
+    const res = await fetch(url, {
       method: 'GET', headers: headers, credentials: 'include'
     });
     if (res.ok) {
@@ -32,7 +32,7 @@ export const getData = async(url: string, jwtCookie?: string | undefined): Promi
 }
 export const patchData = async (url: string, data:any): Promise<any|undefined> => {
   try {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url,
+    const res = await fetch(url,
       {
         method: 'PATCH',
         headers: {
@@ -48,7 +48,7 @@ export const patchData = async (url: string, data:any): Promise<any|undefined> =
 }
 export const deleteData = async (url: string): Promise<any | undefined> => {
   try {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url,
+    const res = await fetch(url,
       {
         method: 'DELETE',
         headers: {
