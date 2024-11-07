@@ -1,1 +1,5 @@
-This is my Nest js + Next js todo app.
+This is todo app pet project.
+Stack 
+backend: nestjs + typeorm + PostgreSQL, ts
+frontend: nextjs(App router), MUI + sx props, ts
+
