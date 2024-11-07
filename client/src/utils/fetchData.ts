@@ -7,6 +7,7 @@ export const postData = async(url: string, data:any, jwtCookie?: string | undefi
     {
       method: "POST",
       headers: headers,
+      credentials: "include",
       body: JSON.stringify(data)
     });
   const resData = await res.json();
